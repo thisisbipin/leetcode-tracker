@@ -25,13 +25,15 @@ export default function Card(props) {
             { difficulty: "Hard", count: 0, submissions: 0 },
         ],
     });
-
-    useEffect(async () => {
+    async function fetchData() {
         fetch(URL + profile_data.profile)
             .then((res) => res.json())
             .then((data) => {
                 setprofile_data(data);
             });
+    }
+    useEffect(() => {
+        fetchData();
     }, []);
 
     let link_to_ptofile = "https://leetcode.com/" + profile_data.profile;
