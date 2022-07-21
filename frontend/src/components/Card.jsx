@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import "./css/Card.css";
 import "./css/GraphColor.css";
-
-const URL = "http://localhost:3000/track/";
+const URL = "https://flower-plant-gorilla.glitch.me/track/";
+// const URL = "http://localhost:3000/track/";
 export default function Card(props) {
     let [profile_data, setprofile_data] = useState({
         name: "Loading...",
@@ -26,7 +26,7 @@ export default function Card(props) {
         ],
     });
 
-    useEffect(() => {
+    useEffect(async () => {
         fetch(URL + profile_data.profile)
             .then((res) => res.json())
             .then((data) => {
