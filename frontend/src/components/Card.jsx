@@ -4,6 +4,7 @@ import { useState } from "react";
 import "./css/Card.css";
 import "./css/GraphColor.css";
 
+const URL = "http://localhost:3000/track/";
 export default function Card(props) {
     let [profile_data, setprofile_data] = useState({
         name: "Loading...",
@@ -26,10 +27,7 @@ export default function Card(props) {
     });
 
     useEffect(() => {
-        fetch(
-            "https://shocking-sugary-handball.glitch.me/track/" +
-                profile_data.profile
-        )
+        fetch(URL + profile_data.profile)
             .then((res) => res.json())
             .then((data) => {
                 setprofile_data(data);

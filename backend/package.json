@@ -2,7 +2,8 @@
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.17.3",
-        "leetcode-query": "^0.0.8"
+        "leetcode-query": "^0.0.8",
+        "nodemon": "^2.0.19"
     },
     "type": "module",
     "engines": {
@@ -10,6 +11,7 @@
         "node": ">=16.0.0"
     },
     "scripts": {
-        "start": "node server.js"
+        "start": "node server.js",
+        "dev": "nodemon server.js"
     }
 }

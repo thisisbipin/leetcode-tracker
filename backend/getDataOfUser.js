@@ -17,10 +17,20 @@ const NOT_FOUND = {
     name: "404 NOT FOUND",
     userAvatar: "https://miro.medium.com/max/800/1*hFwwQAW45673VGKrMPE2qQ.png",
     profile: "",
-    latest: 0,
-    allQuestionsCount: [],
+    latest: ["", 1],
+    allQuestionsCount: [
+        { difficulty: "All", count: 0 },
+        { difficulty: "Easy", count: 0 },
+        { difficulty: "Medium", count: 0 },
+        { difficulty: "Hard", count: 0 },
+    ],
     submissionCalendar: [],
-    problems: [],
+    problems: [
+        { difficulty: "All", count: 0, submissions: 0 },
+        { difficulty: "Easy", count: 0, submissions: 0 },
+        { difficulty: "Medium", count: 0, submissions: 0 },
+        { difficulty: "Hard", count: 0, submissions: 0 },
+    ],
 };
 async function getDataOfUser(profile) {
     const data = await leetcode.get_user(profile);
@@ -36,6 +46,9 @@ async function getDataOfUser(profile) {
             submissionCalendar: get_20_latest_date_data(date_data),
             problems: data.matchedUser.submitStats.acSubmissionNum,
         };
-    } else return { ...NOT_FOUND, profile: profile };
+    } else {
+        // console.log({ ...NOT_FOUND, profile: profile });
+        return { ...NOT_FOUND, profile: profile };
+    }
 }
 export default getDataOfUser;
