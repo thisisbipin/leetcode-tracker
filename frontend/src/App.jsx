@@ -104,7 +104,7 @@ function App() {
                             ></span>
                             <i className="fa-solid fa-arrow-right"></i>{" "}
                             <span style={{ color: "yellow" }}>
-                                https://flower-plant-gorilla.glitch.me/
+                                https://flower-plant-gorilla.glitch.me/?
                             </span>
                             <span style={{ color: "lime" }}>neal_wu</span>
                             <span style={{ color: "red" }}>&</span>
