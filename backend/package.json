@@ -1,0 +1,15 @@
+{
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.17.3",
+        "leetcode-query": "^0.0.8"
+    },
+    "type": "module",
+    "engines": {
+        "npm": ">=7.0.0",
+        "node": ">=16.0.0"
+    },
+    "scripts": {
+        "start": "node server.js"
+    }
+}
