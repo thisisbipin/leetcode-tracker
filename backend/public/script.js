@@ -41,7 +41,7 @@ function startTracking() {
         </thead>';
     let counter = 0;
     PROFILES.map(async (ele) => {
-        const URL = "http://localhost:3000/track/" + ele;
+        const URL = "https://flower-plant-gorilla.glitch.me/track/" + ele;
         try {
             let res = await fetch(URL);
             let json = await res.json();
