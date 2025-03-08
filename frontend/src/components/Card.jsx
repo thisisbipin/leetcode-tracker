@@ -4,10 +4,12 @@ import { useState } from "react";
 import Icons from "./Icons";
 import { Leetcodecalendar } from "react-leetcode-calendar";
 
+const URL = "https://flower-plant-gorilla.glitch.me/track";
 const Card = ({ profile }) => {
     let [profile_data, setprofile_data] = useState({
         name: "Loading...",
-        userAvatar: "https://fastly.picsum.photos/id/152/1000/1000.jpg?hmac=PROUM_wXGBei6hWzAx70AbTAJJOuTh5-aSwVQAycddw",
+        userAvatar:
+            "https://fastly.picsum.photos/id/152/1000/1000.jpg?hmac=PROUM_wXGBei6hWzAx70AbTAJJOuTh5-aSwVQAycddw",
         profile: profile,
         latest: ["", 1],
         allQuestionsCount: [
@@ -25,11 +27,8 @@ const Card = ({ profile }) => {
         ],
     });
     async function fetchData() {
-        console.log(
-            "Fetching data for ",
-            import.meta.env.VITE_BACKEND_URL + profile_data.profile
-        );
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/${profile_data.profile}`)
+        console.log("Fetching data for ", `${URL}/${profile_data.profile}`);
+        fetch(`${URL}/${profile_data.profile}`)
             .then((res) => res.json())
             .then((data) => {
                 setprofile_data(data);
