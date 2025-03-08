@@ -1,6 +1,8 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
+import LeetCodeCalendar from "leetcode-calendar";
+
 import "./css/Card.css";
 import "./css/GraphColor.css";
 const URL = "https://flower-plant-gorilla.glitch.me/track/";
@@ -25,6 +27,24 @@ export default function Card(props) {
             { difficulty: "Hard", count: 0, submissions: 0 },
         ],
     });
+
+    const exampleTheme = {
+        light: [
+            "rgb(235, 235, 235)",
+            "rgba(192, 132, 245, 0.44)",
+            "rgba(192, 132, 245, 0.6)",
+            "rgba(192, 132, 245, 0.76)",
+            "rgba(192, 132, 245, 0.92)",
+        ],
+        dark: [
+            "rgba(46, 46, 46, 0.51)",
+            "rgb(27, 83, 27)",
+            "rgb(31, 124, 31)",
+            "rgb(18, 173, 18)",
+            "rgb(0, 255, 0)",
+        ],
+    };
+
     async function fetchData() {
         fetch(URL + profile_data.profile)
             .then((res) => res.json())
@@ -80,6 +100,26 @@ export default function Card(props) {
                             getGraph(ele)
                         )}
                     </div>
+                </div>
+                <div
+                    style={{
+                        background: "#101828",
+                        color: "white",
+                        display: "flex",
+                        padding: "10px",
+                        height: "auto",
+                        width: "100%",
+                        justifyContent: "left",
+                        border: "2px solid red",
+                    }}
+                >
+                    <LeetCodeCalendar
+                        username={profile_data.profile}
+                        blockSize={8}
+                        blockMargin={5}
+                        fontSize={16}
+                        theme={exampleTheme}
+                    />
                 </div>
                 <ul className="postcard__tagbox">
                     <li className="tag__item">

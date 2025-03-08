@@ -33,7 +33,7 @@ const NOT_FOUND = {
     ],
 };
 async function getDataOfUser(profile) {
-    const data = await leetcode.get_user(profile);
+    const data = await leetcode.user(profile);
 
     if (data.matchedUser != null) {
         let date_data = await JSON.parse(data.matchedUser.submissionCalendar);
