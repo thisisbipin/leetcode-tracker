@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 const port = 3000;
 
-app.use(express.static("../frontend/build/"));
+app.use(express.static("../frontend/dist/"));
 app.use("/v1", express.static("public/"));
 
 app.get("/", (req, res) => {

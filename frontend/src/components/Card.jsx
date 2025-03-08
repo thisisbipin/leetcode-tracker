@@ -1,17 +1,14 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import LeetCodeCalendar from "leetcode-calendar";
+import Icons from "./Icons";
+import { Leetcodecalendar } from "react-leetcode-calendar";
 
-import "./css/Card.css";
-import "./css/GraphColor.css";
-const URL = "https://flower-plant-gorilla.glitch.me/track/";
-// const URL = "http://localhost:3000/track/";
-export default function Card(props) {
+const Card = ({ profile }) => {
     let [profile_data, setprofile_data] = useState({
         name: "Loading...",
-        userAvatar: "https://picsum.photos/1000/1000",
-        profile: props.profile,
+        userAvatar: "https://fastly.picsum.photos/id/152/1000/1000.jpg?hmac=PROUM_wXGBei6hWzAx70AbTAJJOuTh5-aSwVQAycddw",
+        profile: profile,
         latest: ["", 1],
         allQuestionsCount: [
             { difficulty: "All", count: 0 },
@@ -27,159 +24,101 @@ export default function Card(props) {
             { difficulty: "Hard", count: 0, submissions: 0 },
         ],
     });
-
-    const exampleTheme = {
-        light: [
-            "rgb(235, 235, 235)",
-            "rgba(192, 132, 245, 0.44)",
-            "rgba(192, 132, 245, 0.6)",
-            "rgba(192, 132, 245, 0.76)",
-            "rgba(192, 132, 245, 0.92)",
-        ],
-        dark: [
-            "rgba(46, 46, 46, 0.51)",
-            "rgb(27, 83, 27)",
-            "rgb(31, 124, 31)",
-            "rgb(18, 173, 18)",
-            "rgb(0, 255, 0)",
-        ],
-    };
-
     async function fetchData() {
-        fetch(URL + profile_data.profile)
+        console.log(
+            "Fetching data for ",
+            import.meta.env.VITE_BACKEND_URL + profile_data.profile
+        );
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/${profile_data.profile}`)
             .then((res) => res.json())
             .then((data) => {
                 setprofile_data(data);
+                return data;
+            })
+            .then((data) => {
+                data.submissionCalendar = data.submissionCalendar.map((ele) => {
+                    return {
+                        date: new Date(ele[0] * 1000)
+                            .toISOString()
+                            .split("T")[0],
+                        count: ele[1],
+                        level: ele[1] === 1 ? 1 : ele[1] <= 3 ? 2 : 3,
+                    };
+                });
+
+                const lastYearDate = new Date();
+                lastYearDate.setFullYear(lastYearDate.getFullYear() - 1);
+                const dummyData = {
+                    date: "2024-08-02",
+                    count: 1,
+                    level: 1,
+                };
+                data.submissionCalendar.push(dummyData);
+                // sort the data
+                data.submissionCalendar = data.submissionCalendar.sort(
+                    (a, b) => {
+                        return new Date(b.date) - new Date(a.date);
+                    }
+                );
+                setprofile_data(data);
+                console.log(data.submissionCalendar);
             });
     }
     useEffect(() => {
         fetchData();
     }, []);
 
-    let link_to_ptofile = "https://leetcode.com/" + profile_data.profile;
     return (
-        <article className="postcard dark blue">
-            <a
-                target="_blank"
-                rel="noreferrer"
-                className="postcard__img_link"
-                href={link_to_ptofile}
-            >
-                <img
-                    className="postcard__img"
-                    src={profile_data.userAvatar}
-                    alt="User Profile"
-                />
-            </a>
-            <div className="postcard__text">
-                <h1 className="postcard__title blue">
-                    <a target="_blank" rel="noreferrer" href={link_to_ptofile}>
-                        {profile_data.name}
-                    </a>
-                    <div
-                        className="postcard__subtitle small"
-                        style={{ color: "#AAAAAA" }}
+        <div className="flex flex-col items-center bg-white border w-full border-gray-200 rounded-lg shadow-sm sm:flex-row dark:border-gray-700 dark:bg-gray-800 my-4">
+            <img
+                className="w-full rounded-t-lg h-96 sm:h-auto sm:w-48 sm:rounded-lg mx-4 min-w-48"
+                src={profile_data.userAvatar}
+                alt={profile_data.name}
+            />
+            <div className="flex flex-col justify-between p-4 leading-normal w-full">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {profile_data.name}
+                    <a
+                        href={"https://leetcode.com/" + profile_data.profile}
+                        className="px-2 font-medium text-gray-700 dark:text-gray-400 cursor-pointer hover:text-gray-900 dark:hover:text-white animate"
                     >
                         ({profile_data.profile})
-                    </div>
-                </h1>
-                <div className="postcard__subtitle small">
-                    Max. Rating: null
-                </div>
-                <div className="postcard__bar"></div>
-                <div className="postcard__preview-txt">
-                    <div
-                        style={{
-                            display: "flex",
-                            flexWrap: "wrap",
-                            width: "90%",
-                            maxWidth: "50vw",
-                        }}
-                    >
-                        {profile_data.submissionCalendar.map((ele) =>
-                            getGraph(ele)
-                        )}
-                    </div>
-                </div>
-                <div
-                    style={{
-                        background: "#101828",
-                        color: "white",
-                        display: "flex",
-                        padding: "10px",
-                        height: "auto",
-                        width: "100%",
-                        justifyContent: "left",
-                    }}
-                >
-                    <LeetCodeCalendar
-                        username={profile_data.profile}
-                        blockSize={8}
-                        blockMargin={5}
-                        fontSize={16}
-                        theme={exampleTheme}
-                    />
-                </div>
-                <ul className="postcard__tagbox">
-                    <li className="tag__item">
-                        <i className="fas fa-tag mr-2">
-                            {" "}
-                            {profile_data.problems[0].count}
-                        </i>{" "}
-                        <span>All</span>
+                    </a>
+                </h5>
+
+                <ul className="flex flex-wrap">
+                    <li className="mr-2 mb-2">
+                        <span className="inline-flex items-center px-2 py-1 font-medium text-white bg-gray-200 rounded dark:bg-gray-700 dark:text-white">
+                            {Icons.Tag}
+                            {profile_data.problems[0].count} All
+                        </span>
                     </li>
-                    <li className="tag__item">
-                        <i className="fas fa-tag mr-2">
-                            {" "}
-                            {profile_data.problems[1].count}
-                        </i>{" "}
-                        <span style={{ color: "lightgreen" }}>Easy</span>
+                    <li className="mr-2 mb-2">
+                        <span className="inline-flex items-center px-2 py-1 font-medium text-white bg-green-200 rounded dark:bg-green-700 dark:text-white">
+                            {Icons.Tag}
+                            {profile_data.problems[1].count} Easy
+                        </span>
                     </li>
-                    <li className="tag__item">
-                        <i className="fas fa-tag mr-2 ">
-                            {" "}
-                            {profile_data.problems[2].count}
-                        </i>{" "}
-                        <span style={{ color: "orange" }}>Medium</span>
+                    <li className="mr-2 mb-2">
+                        <span className="inline-flex items-center px-2 py-1 font-medium text-white bg-orange-200 rounded dark:bg-orange-700 dark:text-white">
+                            {Icons.Tag}
+                            {profile_data.problems[2].count} Medium
+                        </span>
                     </li>
-                    <li className="tag__item play blue">
-                        <i className="fas fa-tag mr-2">
-                            {" "}
-                            {profile_data.problems[3].count}
-                        </i>{" "}
-                        <span style={{ color: "red" }}>Hard</span>
+                    <li className="mr-2 mb-2">
+                        <span className="inline-flex items-center px-2 py-1 font-medium text-white bg-red-200 rounded dark:bg-red-700 dark:text-white">
+                            {Icons.Tag}
+                            {profile_data.problems[3].count} Hard
+                        </span>
                     </li>
                 </ul>
+                <Leetcodecalendar
+                    username={profile_data.profile}
+                    graph={"yearly"}
+                />
             </div>
-        </article>
+        </div>
     );
-}
+};
 
-function getGraph(value = []) {
-    let star = "1";
-    let boxclass = "box c";
-    if (value[1] >= 4) star = "4";
-    else if (value[1] === 3) star = "3";
-    else if (value[1] === 2) star = "2";
-    let date = new Date(value[0] * 1000);
-    let tooltip =
-        value[1] +
-        " submissions on " +
-        date.getDate() +
-        "/" +
-        date.getMonth() +
-        "/" +
-        date.getFullYear();
-
-    boxclass += star;
-    if (date.getDay() === 0) boxclass += " blink_me";
-    return (
-        <div
-            key={value[0]}
-            className={boxclass}
-            data-toggle="tooltip"
-            data-placement="bottom"
-            title={tooltip}
-        ></div>
-    );
-}
+export default Card;
