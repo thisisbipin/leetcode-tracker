@@ -32,7 +32,7 @@ function App() {
             <section className="dark">
                 <div className="container py-4">
                     <h1 className="h1 text-center" id="pageHeaderTitle">
-                        LeetCode Tracker v2.0
+                        LeetCode Tracker v2.1
                     </h1>
                     <span
                         style={{
