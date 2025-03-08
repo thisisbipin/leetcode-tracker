@@ -33,7 +33,8 @@ function App() {
                 <div className="container py-4">
                     <h1 className="h1 text-center" id="pageHeaderTitle">
                         LeetCode Tracker v2.1
-                    </h1>
+                    </h1 >
+                    <p className="text-center">(bug: single submission on a date is not counted)</p>
                     <span
                         style={{
                             position: "absolute",

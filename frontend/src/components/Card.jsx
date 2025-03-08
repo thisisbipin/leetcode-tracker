@@ -110,7 +110,6 @@ export default function Card(props) {
                         height: "auto",
                         width: "100%",
                         justifyContent: "left",
-                        border: "2px solid red",
                     }}
                 >
                     <LeetCodeCalendar
